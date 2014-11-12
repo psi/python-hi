@@ -4,7 +4,7 @@ import json
 class Root(object):
     @cherrypy.expose
     def index(self):
-        return 'Call /hello, /echo or /reverse'
+        return '<div>Call /hello, /echo or /reverse</div>'
 
 class Hello(object):
     @cherrypy.expose
