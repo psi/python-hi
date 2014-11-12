@@ -9,16 +9,19 @@ class Root(object):
 class Hello(object):
     @cherrypy.expose
     def index(self):
+        cherrypy.response.headers['Content-Type'] = "application/json"
         return json.dumps({'result': 'hi'})
 
 class Echo(object):
     @cherrypy.expose
     def index(self, string=''):
+        cherrypy.response.headers['Content-Type'] = "application/json"
         return json.dumps({'result': string})
 
 class Reverse(object):
     @cherrypy.expose
     def index(self, string=''):
+        cherrypy.response.headers['Content-Type'] = "application/json"
         return json.dumps({'result': string[::-1]})
 
 if __name__ == '__main__':
