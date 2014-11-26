@@ -5,8 +5,12 @@ from app.echo import Echo
 
 app = cherrypy.tree
 
-cherrypy.tree.mount(Root(), '/')
-cherrypy.tree.mount(Echo(), '/echo')
+app_config = {
+    '/': {'tools.trailing_slash.on': False}
+}
+
+cherrypy.tree.mount(Root(), '/',     config=app_config)
+cherrypy.tree.mount(Echo(), '/echo', config=app_config)
 
 if __name__=='__main__':
 
