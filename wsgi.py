@@ -1,43 +1,20 @@
 import cherrypy
-import json
 
-class Root(object):
-    @cherrypy.expose
-    def index(self):
-        return '<div>Call /hello, /echo or /reverse</div>'
+from app.root import Root
+from app.echo import Echo
 
-class Hello(object):
-    @cherrypy.expose
-    def index(self):
-        cherrypy.response.headers['Content-Type'] = "application/json"
-        return json.dumps({'result': 'hi'})
+app = cherrypy.tree
 
-class Echo(object):
-    @cherrypy.expose
-    def index(self, string=''):
-        cherrypy.response.headers['Content-Type'] = "application/json"
-        return json.dumps({'result': string})
+cherrypy.tree.mount(Root(), '/')
+cherrypy.tree.mount(Echo(), '/echo')
 
-class Reverse(object):
-    @cherrypy.expose
-    def index(self, string=''):
-        cherrypy.response.headers['Content-Type'] = "application/json"
-        return json.dumps({'result': string[::-1]})
-
-if __name__ == '__main__':
-    app_config = {
-        '/': {'tools.trailing_slash.on': False}
-    }
+if __name__=='__main__':
 
     cherrypy.config.update({
-        'server.socket_host': '0.0.0.0',
-        'server.socket_port': 8080
+        'server.socket_host': '127.0.0.1',
+        'server.socket_port': 8080,
     })
 
-    cherrypy.tree.mount(Root(),    '/',        config=app_config)
-    cherrypy.tree.mount(Hello(),   '/hello',   config=app_config)
-    cherrypy.tree.mount(Echo(),    '/echo',    config=app_config)
-    cherrypy.tree.mount(Reverse(), '/reverse', config=app_config)
-
+    # Run the application using CherryPy's HTTP Web Server
     cherrypy.engine.start()
     cherrypy.engine.block()
