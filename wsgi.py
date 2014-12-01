@@ -10,9 +10,7 @@ app_config = {
     '/': {'tools.trailing_slash.on': False}
 }
 
-mounts = [i for i in dir(endpoints) if not re.search(r"^__", i)]
-
-for m in mounts:
+for m in endpoints.__all__:
     if m == 'root':
         endpoint_path = '/'
     else:
