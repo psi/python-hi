@@ -1,7 +1,8 @@
 import cherrypy
+import re
+import string
 
-from app.root import Root
-from app.echo import Echo
+import endpoints
 
 app = cherrypy.tree
 
@@ -9,8 +10,16 @@ app_config = {
     '/': {'tools.trailing_slash.on': False}
 }
 
-cherrypy.tree.mount(Root(), '/',     config=app_config)
-cherrypy.tree.mount(Echo(), '/echo', config=app_config)
+mounts = [i for i in dir(endpoints) if not re.search(r"^__", i)]
+
+for m in mounts:
+    if m == 'root':
+        endpoint_path = '/'
+    else:
+        endpoint_path = '/' + m
+
+    endpoint_class = 'endpoints.' + m + '.' + string.capwords(m, '_') + '()'
+    cherrypy.tree.mount(eval(endpoint_class), endpoint_path, config=app_config)
 
 if __name__=='__main__':
 
