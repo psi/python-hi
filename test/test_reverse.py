@@ -1,6 +1,5 @@
-import unittest
-
 import json
+import unittest
 
 from endpoints import reverse
 
